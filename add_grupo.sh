@@ -25,7 +25,7 @@ crear_grupo() {
     fi
 
     PASSWORD=$(openssl rand -base64 12)
-    
+
     # Crear usuario
     if ! sudo useradd -m -d "$BASE_DIR/$NEW_GROUP" -s /bin/bash "$NEW_GROUP"; then
         echo -e "\033[1;31m❌ Error al crear el usuario $NEW_GROUP.\033[0m"
@@ -48,8 +48,7 @@ crear_grupo() {
     if ! sudo chown -R $NEW_GROUP:$NEW_GROUP "$BASE_DIR/$NEW_GROUP"; then
         echo -e "\033[1;31m❌ Error al cambiar propietario de los archivos.\033[0m"
         exit 1
-    fi
-
+    fi                                                                                                                                                                        
     sudo chmod 755 "$BASE_DIR/$NEW_GROUP"
     sudo chmod 755 "$BASE_DIR/$NEW_GROUP/$HTML_DIR"
 
@@ -99,6 +98,7 @@ crear_grupo() {
     if ! sudo mysql -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$NEW_GROUP'@'localhost';"; then
         echo -e "\033[1;31m❌ Error al asignar privilegios a $NEW_GROUP en la base de datos $DB_NAME.\033[0m"
         exit 1
+     
     fi
 
     sudo mysql -e "FLUSH PRIVILEGES;"
@@ -113,8 +113,8 @@ crear_grupo() {
     echo -e "\033[1;34m👤 Usuario:\033[0m $NEW_GROUP"
     echo -e "\033[1;34m🔑 Contraseña:\033[0m $PASSWORD"
     echo -e "\033[1;34m📊 Base de datos:\033[0m $DB_NAME"
-    echo -e "\033[1;34m🌍 Sitio web:\033[0m http://$DOMAIN/~$NEW_GROUP/"
+    echo -e "\033[1;34m🌍 Sitio web:\033[0m http://$DOMAIN/$NEW_GROUP/"
     echo -e "\033[1;32m-------------------------------------------\033[0m"
 }
 
-crear_grupo
+crear_grupo 
